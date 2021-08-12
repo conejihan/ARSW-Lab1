@@ -4,11 +4,27 @@
  * and open the template in the editor.
  */
 package edu.eci.arsw.threads;
+import java.lang.*;
+
 
 /**
  *
  * @author hcadavid
  */
-public class CountThread {
+public class CountThread implements Runnable{
+	int a;
+	int b;
+	
+	public CountThread(int i, int j) {
+		a = i;
+		b = j;
+	}
+	
+	@Override
+	public void run() {
+		for(int i = a; i < b; i++) {
+			System.out.println(i);
+		}
+	}
     
 }
