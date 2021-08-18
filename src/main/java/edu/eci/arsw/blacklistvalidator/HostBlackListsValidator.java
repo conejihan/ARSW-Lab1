@@ -36,7 +36,7 @@ public class HostBlackListsValidator {
     public List<Integer> checkHost(String ipaddress, int n){
         
         LinkedList<Integer> blackListOcurrences=new LinkedList<>();
-        LinkedList<Thread> threadsList = new LinkedList<>();
+        LinkedList<SearchServerThread> threadsList = new LinkedList<>();
         SearchServerThread search = new SearchServerThread(ipaddress,a,b);
         int tOcurrencesCount = 0;
         
@@ -48,37 +48,36 @@ public class HostBlackListsValidator {
         if(skds.getRegisteredServersCount()%n == 0) {
         	
         	for(int i=0;i<n;i++) {
-        		this.a = skds.getRegisteredServersCount()/n * i;
-        		this.b = skds.getRegisteredServersCount()/n + a;
-        
+        		a = skds.getRegisteredServersCount()/n * i;
+        		b = skds.getRegisteredServersCount()/n * (i+1);
         		search = new SearchServerThread(ipaddress,a,b);
-        		threadsList.add(search);
-        	}
+    			threadsList.add(search);
+    			}
         }
         else {
         	
         	for(int i=0;i<n;i++) {
-        		if(i==n-1) {
-        			this.b = skds.getRegisteredServersCount();
-        		}
-        		else {
-        			this.b = skds.getRegisteredServersCount()/n + a;
-        		}
-        		this.a = skds.getRegisteredServersCount()/n * i;
+        		a = skds.getRegisteredServersCount()/n * i;
+        		b = skds.getRegisteredServersCount()/n * (i+1);
+        		if(n-1 == i) {
+        				b = skds.getRegisteredServersCount();
+        			}
+        		
         		search = new SearchServerThread(ipaddress,a,b);
-        		threadsList.add(search);
+    			threadsList.add(search);
         	}
         }
         
-        for(Thread thread:threadsList){
+
+        for(SearchServerThread thread:threadsList){
             thread.start();
         }
-        for(Thread thread:threadsList){
+        for(SearchServerThread thread:threadsList){
             try {
                 thread.join();
-                tOcurrencesCount += ((SearchServerThread) thread).noOcurrencesCount();
-                tCheckedListsCount += ((SearchServerThread) thread).nOcurrences();
-                blackListOcurrences.addAll(((SearchServerThread) thread).getServers());
+                tOcurrencesCount += thread.noOcurrencesCount();
+                tCheckedListsCount +=  thread.nOcurrences();
+                blackListOcurrences.addAll(thread.getServers());
             } catch(Exception e) {
                 System.out.println("Error");
             }
