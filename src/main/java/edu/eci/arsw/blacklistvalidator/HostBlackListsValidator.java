@@ -52,8 +52,7 @@ public class HostBlackListsValidator {
         		this.b = skds.getRegisteredServersCount()/n + a;
         
         		search = new SearchServerThread(ipaddress,a,b);
-        		Thread segmento = new Thread(search);
-        		threadsList.add(segmento);
+        		threadsList.add(search);
         	}
         }
         else {
@@ -67,24 +66,24 @@ public class HostBlackListsValidator {
         		}
         		this.a = skds.getRegisteredServersCount()/n * i;
         		search = new SearchServerThread(ipaddress,a,b);
-        		Thread segmento = new Thread(search);
-        		threadsList.add(segmento);
+        		threadsList.add(search);
         	}
         }
         
-        for(int i=0; i<n; i++) {
-        	threadsList.get(i).start();
-        	try {
-
-        		threadsList.get(i-1).join();
-
-        		} catch (InterruptedException ie) {
-
-        		}
+        for(Thread thread:threadsList){
+            thread.start();
+        }
+        for(Thread thread:threadsList){
+            try {
+                thread.join();
+                tOcurrencesCount += ((SearchServerThread) thread).noOcurrencesCount();
+                tCheckedListsCount += ((SearchServerThread) thread).nOcurrences();
+                blackListOcurrences.addAll(((SearchServerThread) thread).getServers());
+            } catch(Exception e) {
+                System.out.println("Error");
+            }
         }
         
-        tCheckedListsCount += search.nOcurrences();
-    	tOcurrencesCount += search.noOcurrencesCount();
         if (tOcurrencesCount>=BLACK_LIST_ALARM_COUNT){
             skds.reportAsNotTrustworthy(ipaddress);
         }
