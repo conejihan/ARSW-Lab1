@@ -27,15 +27,15 @@ lo que se hace es ejecutar el hilo de manera sincronica
 
 Se obtuvieron los siguientes resultados de las validaciones que se realizaron 
 
-_ #Threads = 1_
+_#Threads = 1_
 ![Screenshot](img/1hilo.png)
-_ #Threads = 8_
+_#Threads = 8_
 ![Screenshot](img/8hilos.png)
-_ #Threads = 16_
+_#Threads = 16_
 ![Screenshot](img/16hilos.png)
-_ #Threads = 50_
+_#Threads = 50_
 ![Screenshot](img/50hilos.png)
-_ #Threads = 100_
+_#Threads = 100_
 ![Screenshot](img/100hilos.png)
 
 Con los anteriores resultados se realizo una grafica, en la cual se determino que entre mas hilos se usen, menor es el tiempo de ejecucion
